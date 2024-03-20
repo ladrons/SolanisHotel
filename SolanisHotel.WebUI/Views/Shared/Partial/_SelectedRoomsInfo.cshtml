@@ -1,0 +1,36 @@
+﻿@model List<RoomDTO>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="text-center">Seçilen Oda Bilgileri</h3>
+    </div>
+
+    <div class="card-body">
+        @foreach (var room in Model)
+        {
+            <div class="col-md-12" style="text-align:center">
+                <div>
+                    <h4>Normal Oda - @room.RoomNumber</h4>
+
+                    <hr />
+
+                    <div class="mb-3">
+                        <strong>Oda Numarası:</strong> @room.RoomNumber
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Oda Açıklaması:</strong> @room.Description
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Oda Fiyatı:</strong> @room.Price.ToString("C")
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Kapasite:</strong> @room.Capacity
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

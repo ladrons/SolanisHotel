@@ -1,0 +1,65 @@
+﻿@model ReservationVM
+
+@{
+    ViewData["Title"] = "PaymentSuccessful";
+}
+
+<div>
+
+    <div class="text-center">
+        <h3 style="color:green">Ödeme işlemi başarılı bir şekilde gerçekleştirildi!</h3>
+    </div>
+
+    <hr />
+
+    <div class="d-flex justify-content-center">
+        <div class="card w-50 text-center">
+            <div class="card-header">
+                <h4>Rezervasyon Bilgileri</h4>
+            </div>
+            <div class="card-body">
+
+                <h5 class="card-title">Giriş / Çıkış Tarihleri</h5>
+                <p class="card-text">@Model.CheckIn.ToString("yyyy MMMM dddd") / @Model.CheckOut.ToString("yyyy MMMM dddd")</p>
+
+                <!--ODA BİLGİLERİ-->
+
+                <h5 class="card-title">Genel Bilgiler</h5>
+
+                <p class="card-text"><strong>Seçilen Misafir Sayısı:</strong> @Model.ReservationDTO.NumberOfGuests</p>
+                <p class="card-text"><strong>Seçilen Oda Sayısı:</strong> @Model.ReservationDTO.NumberOfRooms</p>
+
+                <p class="card-text">
+                    <strong>Gereken Ekstra Yatak Sayısı:</strong> @if (Model.ReservationDTO.NumberOfExtraBeds <= 0)
+                    {
+                        @:Ekstra yatak gerekmiyor.
+                    }
+                    else
+                    {
+                        @Model.ReservationDTO.NumberOfExtraBeds @:Adet ekstra yatak gereklidir.
+                    }
+                </p>
+
+                <hr />
+
+                <h5 class="card-title">Oda Bilgileri</h5>
+
+                @{
+                    foreach (RoomDTO room in Model.SuitableRoomsDTO)
+                    {
+                        <p class="card-text"><strong>Oda Numarası:</strong> @room.RoomNumber</p>
+                    }
+                }
+
+                <hr />
+
+                <h5 class="card-title">Ödeme Bilgileri</h5>
+
+                <p class="card-text"><strong>Rezervasyon Ücreti:</strong> @Model.PaymentDTO.TotalAmount</p>
+                <p class="card-text"><strong>Banka Onay Numarası:</strong> @Model.PaymentDTO.TransactionCode</p>
+
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Ana sayfa</a>
+            </div>
+        </div>
+    </div>
+</div>

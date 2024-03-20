@@ -1,0 +1,61 @@
+﻿@model ReservationVM
+
+@{
+    ViewData["Title"] = "ShowReservation";
+}
+
+<h1>Rezervasyon Kontrol</h1>
+
+<p>Bu ekranda rezervasyon ile ilgili son bilgiler müşteriye sunulur. Müşteri süreçten memnun ise ödeme ekranına geçer.</p>
+
+<hr />
+
+<div class="container mt-5">
+    <h3 style="text-align:center">Show Reservation Page</h3>
+
+    <p>Kalan süre: <span id="countdown"></span></p>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-10 d-flex justify-content-center flex-row" style="border-style: solid; border-width:1px;">
+            <div class="mb-3 me-4">
+                <strong>Giriş Tarihi:</strong> @Model.CheckIn.ToShortDateString()
+            </div>
+            <div class="mb-3 me-4">
+                <strong>Çıkış Tarihi:</strong> @Model.CheckOut.ToShortDateString()
+            </div>
+            <div class="mb-3 me-4">
+                <strong>Seçilen Misafir Sayısı:</strong> @Model.ReservationDTO.NumberOfGuests
+            </div>
+            <div class="mb-3 me-4">
+                <strong>Seçilen Oda Sayısı:</strong> @Model.ReservationDTO.NumberOfRooms
+            </div>
+            <div class="mb-3">
+                <strong>Zorunlu Ekstra Yatak Sayısı:</strong> @Model.ReservationDTO.NumberOfExtraBeds
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row justify-content-center">
+        
+        <partial name="Partial/_SelectedRoomsInfo" for="SuitableRoomsDTO" />
+
+    </div>
+
+    <form asp-controller="Payment" asp-action="ProcessPayment" method="get">
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-success" id="continueButton">Ödeme Gerçekleştir</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<script src="~/js/Common/reservationExitHandler.js"></script>

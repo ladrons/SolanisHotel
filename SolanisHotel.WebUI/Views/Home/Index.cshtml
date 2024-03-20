@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Solanis Hotel'e Hoş Geldiniz.</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>  
+
+    <h5 style="color:green">@TempData["loginSuccessful"]</h5>
+    <h5 style="color:green">@TempData["logoutSuccessful"]</h5>
+
+    <a asp-controller="Reservation" asp-action="MakeReservation">Rezervasyon Oluşturma Sayfası</a> <!--Herkes ulaşabilir.-->
+    <a asp-controller="Reservation" asp-action="ShowReservation">Rezervasyon Görüntüleme Sayfası</a> <!--Sadece Session varsa ulaşılabilir.-->
+    <br />
+    <a asp-controller="Payment" asp-action="ConfirmPayment">Ödeme Sayfası</a> <!--Sadece Session varsa ulaşılabilir.-->
+    <br />
+    <a asp-controller="Account" asp-action="Login">Giriş Yap</a> <!--Herkes ulaşabilir.-->
+    <a asp-controller="Account" asp-action="Register">Kayıt Ol</a> <!--Herkes ulaşabilir.-->
+    <br />
+    <a asp-controller="Account" asp-action="Logout">Çıkış Yap</a> <!--Sadece giriş yapmış üye varsa ulaşabilir.-->
+    <a asp-controller="Account" asp-action="Profile">Profil</a> <!--Sadece giriş yapmış üye varsa ulaşabilir.-->
+    <br />
+    <a asp-controller="Reservation" asp-action="CancelReservation">Geçici Rez. Bilgilerini Sil</a> <!--Sadece giriş yapmış üye varsa ulaşabilir.-->
+</div>

@@ -1,0 +1,19 @@
+﻿@model ReservationVM
+
+@{
+    ViewData["Title"] = "PaymentFailed";
+}
+
+<div class="text-center">
+    <h3 style="color:red">Ödeme sırasında bir hata meydana geldi. Lütfen bankanız ile iletişime geçiniz.</h3>
+
+    <hr />
+
+    <p><strong>İşlem tarih ve saat bilgisi: </strong>@Model.PaymentDTO.PaymentDate.ToString("dd MMMM yyyy HH:mm:ss")</p>
+
+    <p><strong>Ödeme Kontrol Kodu: </strong>@Model.PaymentDTO.TransactionCode</p>
+
+    <p><strong>Eğer hesabınızdan ücret çekimi olduysa yukarıdaki bilgileri bankanıza bildiriniz.</strong></p>
+
+    <a asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+</div>

@@ -1,0 +1,126 @@
+﻿@model PaymentVM
+
+@{
+    ViewData["Title"] = "ProcessPayment";
+}
+
+<div class="container">
+
+    <div id="countdownDisplay" style="font-size: 2em; text-align:center"></div>
+
+    <p>Kalan süre: <span id="countdown"></span></p>
+
+    <div class="row">
+        <!-- Sol Sütun: Odalar Bilgisi -->
+        <div class="col-md-6 mb-3">
+
+            <partial name="Partial/_SelectedRoomsInfo" for="suitableRoomsDTO" />
+
+        </div>
+
+        <!-- Sağ Sütun: Ödeme Formu -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Ödeme ve Kişisel Bilgiler</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ProcessPayment" method="post">
+                        <!-- Müşteri bilgileri -->
+                        @{
+                            if (User.Identity!.IsAuthenticated)
+                            {
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CustomerDTO.FirstName" for="firstName" class="form-label">Ad</label>
+                                        <input asp-for="CustomerDTO.FirstName" type="text" id="firstName" class="form-control" id="firstName" readonly value="@Model.CustomerDTO.FirstName">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CustomerDTO.LastName" for="lastName" class="form-label">Soyad</label>
+                                        <input asp-for="CustomerDTO.LastName" type="text" id="lastName" class="form-control" id="lastName" readonly value="@Model.CustomerDTO.LastName">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="CustomerDTO.BirthDate" for="birthdate" class="form-label">Doğum Tarihi</label>
+                                        <input asp-for="CustomerDTO.BirthDate" type="text" id="birthdate" class="form-control" id="birthdate" readonly value="@Model.CustomerDTO.BirthDate.ToShortDateString()">
+                                    </div>
+                                    <div class="col-md-8 mb-3">
+                                        <label asp-for="CustomerDTO.PhoneNumber" for="phoneNumber" class="form-label">Telefon Numarası</label>
+                                        <input asp-for="CustomerDTO.PhoneNumber" type="text" id="phoneNumber" class="form-control" id="phoneNumber" readonly value="@Model.CustomerDTO.PhoneNumber">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CustomerDTO.Email" for="email" class="form-label">E-posta Adresi</label>
+                                    <input asp-for="CustomerDTO.Email" type="email" id="email" class="form-control" id="email" readonly value="@Model.CustomerDTO.Email">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CustomerDTO.FirstName" for="firstName" class="form-label">Ad</label>
+                                        <input asp-for="CustomerDTO.FirstName" type="text" id="firstName" class="form-control" id="firstName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CustomerDTO.LastName" for="lastName" class="form-label">Soyad</label>
+                                        <input asp-for="CustomerDTO.LastName" type="text" id="lastName" class="form-control" id="lastName" required>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="CustomerDTO.BirthDate" for="birthdate" class="form-label">Doğum Tarihi</label>
+                                        <input asp-for="CustomerDTO.BirthDate" type="date" id="birthdate" class="form-control" id="birthdate" required>
+                                    </div>
+                                    <div class="col-md-8 mb-3">
+                                        <label asp-for="CustomerDTO.PhoneNumber" for="phoneNumber" class="form-label">Telefon Numarası</label>
+                                        <input asp-for="CustomerDTO.PhoneNumber" type="text" id="phoneNumber" class="form-control" id="phoneNumber" oninput="EditPhoneFormat()" value="+90" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CustomerDTO.Email" for="email" class="form-label">E-posta Adresi</label>
+                                    <input asp-for="CustomerDTO.Email" type="email" id="email" class="form-control" id="email" required>
+                                </div>
+                            }
+                        }
+                        <!-- Kredi kartı bilgileri -->
+                        <div class="mb-3">
+                            <label asp-for="PaymentDTO.CardInfo.CardUsername" for="cardUsername" class="form-label">Kart Sahibinin Adı</label>
+                            <input asp-for="PaymentDTO.CardInfo.CardUsername" id="cardUsername" class="form-control" required />
+                            @* <span asp-validation-for="PaymentDTO.CardUsername" style="color:red"></span> *@
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PaymentDTO.CardInfo.CardNumber" for="cardNumber" class="form-label">Kart Numarası</label>
+                            <input asp-for="PaymentDTO.CardInfo.CardNumber" id="cardNumber" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" required />
+                            @* <span asp-validation-for="PaymentDTO.CardNumber" style="color:red"></span> *@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PaymentDTO.CardInfo.ExpirationMonth" for="expiryMonth" class="form-label">Son Kullanma Tarihi (Ay)</label>
+                                <input asp-for="PaymentDTO.CardInfo.ExpirationMonth" id="expiryMonth" class="form-control" required />
+                                @* <span asp-validation-for="PaymentDTO.ExpirationMonth" style="color:red"></span> *@
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PaymentDTO.CardInfo.ExpirationYear" for="expiryYear" class="form-label">Son Kullanma Tarihi (Yıl)</label>
+                                <input asp-for="PaymentDTO.CardInfo.ExpirationYear" id="expiryYear" class="form-control" required />
+                                @* <span asp-validation-for="PaymentDTO.ExpirationYear" style="color:red"></span> *@
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PaymentDTO.CardInfo.CVV" for="securityNumber" class="form-label">Güvenlik Kodu (CVV)</label>
+                            <input asp-for="PaymentDTO.CardInfo.CVV" id="securityNumber" class="form-control" required />
+                            @* <span asp-validation-for="PaymentDTO.CVV" style="color:red"></span> *@
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block" id="continueButton">Ödeme Yap</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Common/reservationExitHandler.js"></script>

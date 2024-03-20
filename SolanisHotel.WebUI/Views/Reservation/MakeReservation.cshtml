@@ -1,0 +1,53 @@
+﻿@model ReservationVM
+
+@{
+    ViewData["Title"] = "MakeReservation";
+}
+
+<h1>Rezervasyon Ekranı</h1>
+
+<p>Bu sayfa üzerinden gerekli bilgileri girerek, (Giriş Tarihi, Çıkış Tarihi, Misafir Sayısı, Oda Sayısı) uygun oda sorgulama işlemi yapılmaktadır.</p>
+
+<hr />
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            @if (TempData["ReservationError"] != null)
+            {
+                <div>
+                    <h5 style="color:red; text-align:center">@TempData["ReservationError"]</h5>
+                </div>
+            }
+
+            <form asp-action="MakeReservation" method="post">
+
+                <div class="mb-3">
+                    <label asp-for="CheckIn" for="checkIn" class="form-label">Giriş Tarihi</label>
+                    <input asp-for="CheckIn" type="date" id="checkIn" class="form-control" min="@DateTime.Now" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CheckOut" for="checkOut">Çıkış Tarihi</label>
+                    <input asp-for="CheckOut" type="date" id="checkOut" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReservationDTO.NumberOfGuests" for="guestCount">Misafir Sayısı (Maks: 6 Kişi)</label>
+                    <input asp-for="ReservationDTO.NumberOfGuests" id="guestCount" class="form-control" min="1" max="6" value="" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReservationDTO.NumberOfRooms" for="roomCount">Oda Sayısı (Maks: 3 Oda)</label>
+                    <input asp-for="ReservationDTO.NumberOfRooms" id="roomCount" class="form-control" min="1" max="3" value="" />
+                </div>
+
+                <button type="submit" class="btn btn-outline-success">Uygun Odaları Bul</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Common/reservationInputControl.js"></script>
