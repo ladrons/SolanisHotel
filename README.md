@@ -21,6 +21,7 @@ Projeyi çalıştırmak için aşağıdaki yazılımların yüklü olması gerek
 
 - .NET Core SDK 8 veya üstü
 - Visual Studio Code veya Visual Studio (2019 ve üstü)
+- Git 2.44.0 veya üstü
 
 ### Kurulum
 
