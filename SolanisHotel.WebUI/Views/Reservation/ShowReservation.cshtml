@@ -4,58 +4,104 @@
     ViewData["Title"] = "ShowReservation";
 }
 
-<h1>Rezervasyon Kontrol</h1>
+<div>
+    <div class="row">
+        <div class="col-10 mx-auto">
 
-<p>Bu ekranda rezervasyon ile ilgili son bilgiler müşteriye sunulur. Müşteri süreçten memnun ise ödeme ekranına geçer.</p>
+            <div class="text-center">
+                <span id="countdown"></span>
+            </div>            
 
-<hr />
-
-<div class="container mt-5">
-    <h3 style="text-align:center">Show Reservation Page</h3>
-
-    <p>Kalan süre: <span id="countdown"></span></p>
-
-    <div class="row justify-content-center">
-
-        <div class="col-md-10 d-flex justify-content-center flex-row" style="border-style: solid; border-width:1px;">
-            <div class="mb-3 me-4">
-                <strong>Giriş Tarihi:</strong> @Model.CheckIn.ToShortDateString()
-            </div>
-            <div class="mb-3 me-4">
-                <strong>Çıkış Tarihi:</strong> @Model.CheckOut.ToShortDateString()
-            </div>
-            <div class="mb-3 me-4">
-                <strong>Seçilen Misafir Sayısı:</strong> @Model.ReservationDTO.NumberOfGuests
-            </div>
-            <div class="mb-3 me-4">
-                <strong>Seçilen Oda Sayısı:</strong> @Model.ReservationDTO.NumberOfRooms
-            </div>
-            <div class="mb-3">
-                <strong>Zorunlu Ekstra Yatak Sayısı:</strong> @Model.ReservationDTO.NumberOfExtraBeds
-            </div>
-        </div>
-    </div>
-
-    <br />
-
-    <div class="row justify-content-center">
-        
-        <partial name="Partial/_SelectedRoomsInfo" for="SuitableRoomsDTO" />
-
-    </div>
-
-    <form asp-controller="Payment" asp-action="ProcessPayment" method="get">
-
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col text-center">
-                    <button type="submit" class="btn btn-success" id="continueButton">Ödeme Gerçekleştir</button>
+            <div class="card text-center">
+                <div class="card-header">
+                    <h3>Rezervasyon Bilgileriniz</h3>
                 </div>
+
+                <div class="card-body">
+                    <h4 class="card-title">Genel Bilgiler</h4>
+
+                    <div class="mb-2">
+                        <span><strong>Giriş Tarihi:</strong> @Model.CheckIn.ToLongDateString() <strong>Çıkış Tarihi:</strong> @Model.CheckOut.ToLongDateString()</span>
+                    </div>
+                    <div class ="mb-2">
+                        <span><strong>Toplam Misafir Sayısı:</strong> @Model.ReservationDTO.NumberOfGuests</span>
+                    </div>
+                    <div class="mb-2">
+                        <span><strong>Toplam Oda Sayısı:</strong> @Model.ReservationDTO.NumberOfRooms</span>
+                    </div>
+                    <div>
+                        @if (Model.ReservationDTO.NumberOfExtraBeds > 0)
+                        {
+                            <span>@Model.ReservationDTO.NumberOfExtraBeds Adet Ekstra Yatak</span>
+                            
+                        }
+                        else
+                        {
+                            <span>Ekstra Yatak Gerekmiyor</span>
+                        }
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row justify-content-center">
+                    <h4 class="card-title">Oda Bilgileri</h4>
+                    @foreach (RoomDTO room in Model.SuitableRoomsDTO)
+                    {
+                        <div class="col-4">
+
+                            <div class="card-body">
+
+                                <div class="mb-2">
+                                    <span><strong>Oda Numarası:</strong> @room.RoomNumber</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span><strong>Günlük Fiyat:</strong> @room.Price.ToString("C")</span>
+                                </div>
+                                <div>
+                                    <span><strong>Kapasite:</strong> @room.Capacity</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+                <hr />
+
+                <div class="card-body">
+                    <h4 class="card-title">Ödeme Bilgileri</h4>
+
+                    <div class="mb-2">
+                        <span><strong>Gecelik Fiyat (Oda Başına):</strong> @Model.SuitableRoomsDTO.FirstOrDefault()?.Price.ToString("C")</span>
+                    </div>
+
+                    @if (Model.ReservationDTO.NumberOfExtraBeds > 0)
+                    {
+                        decimal extraBedPrice = Model.SuitableRoomsDTO.FirstOrDefault().Price / 3;
+
+                        <div class="mb-2">
+                            <span><strong>Ekstra Yatak Fiyatı (Yatak Başına):</strong> @extraBedPrice.ToString("C")</span>
+                        </div>
+                    }
+
+                    <div>
+                        <span><strong>Toplam Fiyat:</strong> @Model.ReservationDTO.TotalPrice.ToString("C")</span>
+                    </div>
+
+                </div>
+
+                <form asp-controller="Payment" asp-action="ProcessPayment" method="get">
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success" id="continueButton">Ödeme Gerçekleştir</button>
+                    </div>
+                </form>
+
             </div>
         </div>
-
-    </form>
-
+    </div>
 </div>
 
 <script src="~/js/Common/reservationExitHandler.js"></script>
