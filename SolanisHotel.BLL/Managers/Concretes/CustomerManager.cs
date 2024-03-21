@@ -68,23 +68,6 @@ namespace SolanisHotel.BLL.Managers.Concretes
 
         //----------//
 
-        public async Task<bool> RegisterCustomer(CustomerDTO customerDTO)
-        {
-            bool isEmailExists = await _cRep.AnyAsync(c => c.Email == customerDTO.Email);
-            if (!isEmailExists)
-            {
-                Customer newCustomer = MappingToCustomer(customerDTO);
-
-                newCustomer.Role = ENTITIES.Enums.UserRole.Customer;
-
-                await _cRep.AddAsync(newCustomer);
-                await _cRep.SaveChangesAsync();
-
-                return true;
-            }
-            return false;
-        }
-
         public async Task<bool> RegisterOrUpdateCustomer(CustomerDTO customerDTO)
         {
             if (await EmailAlreadyExists(customerDTO.Email))

@@ -15,7 +15,7 @@ namespace SolanisHotel.BLL.Managers.Abstracts
 
         //TEST AREA
 
-        Task<bool> RegisterCustomer(CustomerDTO customerDTO);
+        
 
 
 
