@@ -25,7 +25,7 @@ Projeyi çalıştırmak için aşağıdaki yazılımların yüklü olması gerek
 
 ### Kurulum
 
-1. İlk olarak, projeyi klonlayın:
+1. İlk olarak, projeyi klonlayın (Bu işlemi terminal üzerinden yapabilmek için bilgisayarınızda 'Git' programı kurulu olmalıdır):
 
     ```sh
     git clone https://github.com/ladrons/SolanisHotel.git
