@@ -49,6 +49,7 @@ function startCountdown() {
         }
 
         countdownSeconds--;
+        console.log(countdownSeconds);
     }, 1000); // 1 saniye aralýklarla geri sayým yap
 }
 

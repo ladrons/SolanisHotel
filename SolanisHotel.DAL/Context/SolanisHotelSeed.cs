@@ -76,7 +76,7 @@ namespace SolanisHotel.DAL.Context
 					{
 						RoomNumber = i,
 						Description = "Description",
-						Price = 10,
+						Price = 100M,
 						Capacity = 2,
 
 						HotelId = 1
@@ -89,7 +89,7 @@ namespace SolanisHotel.DAL.Context
                     {
                         RoomNumber = i,
                         Description = "Description",
-						Price = 15,
+						Price = 100M,
 						Capacity = 2,
 
 						HotelId = 1,
@@ -102,7 +102,7 @@ namespace SolanisHotel.DAL.Context
                     {
                         RoomNumber = i,
                         Description = "Description",
-                        Price = 20,
+                        Price = 100M,
                         Capacity = 2,
 
                         HotelId = 1,
@@ -110,7 +110,6 @@ namespace SolanisHotel.DAL.Context
                     newRooms.Add(newRoom);
                 }
 			}
-
 			return newRooms;
 		}
     }
