@@ -67,14 +67,25 @@ namespace SolanisHotel.BLL.Managers.Abstracts
         public int CalculateExtraBedCount(List<Room> selectedRooms, int numberOfGuests, int numberOfRooms);
 
         /// <summary>
-        /// Seçilen odaların toplam fiyatını hesaplar.
+        /// Seçilen odaların belirtilen süre boyunca ek yatak talebiyle birlikte toplam fiyatını hesaplar.
         /// </summary>
-        /// <param name="selectedRooms">Seçilen odaların listesi</param>
-        /// <returns>Hesaplanan toplam fiyat</returns>
-        public decimal CalculateTotalPrice(List<Room> selectedRooms);
+        /// <param name="selectedRooms">Seçilen odaların listesi.</param>
+        /// <param name="totalDays">Toplam kalınacak gün sayısı.</param>
+        /// <param name="extraBedCount">Ek yatak sayısı.</param>
+        /// <returns>Toplam fiyat.</returns>
+        decimal CalculateTotalPrice(List<Room> selectedRooms, int totalDays, int extraBedCount);
 
         //----------//
 
         ReservationDTO MappingToReservationDTO(Reservation reservation);
+
+
+
+
+
+        //-----Test Area-----//
+        
+
+        //-----Test Area-----//
     }
 }

@@ -63,7 +63,7 @@ namespace SolanisHotel.BLL.Managers.Concretes
                     {
                         rvm.ReservationDTO.NumberOfExtraBeds = (byte)CalculateExtraBedCount(suitableRooms, rvm.ReservationDTO.NumberOfGuests, rvm.ReservationDTO.NumberOfRooms);
 
-                        rvm.ReservationDTO.TotalPrice = CalculateTotalPrice(suitableRooms); //Todo: Ekstra yatak değeri için fiyat eklenmeli! (HighPriority)
+                        rvm.ReservationDTO.TotalPrice = CalculateTotalPrice(suitableRooms, CalculateTotalNumberOfDays(rvm.CheckIn, rvm.CheckOut), rvm.ReservationDTO.NumberOfExtraBeds);
 
                         Customer currentCustomer = await _customerMan.GetOrCreateCustomer(rvm.CustomerDTO.Email);
                         rvm.CustomerDTO = _customerMan.MappingToCustomerDTO(currentCustomer);
@@ -189,13 +189,21 @@ namespace SolanisHotel.BLL.Managers.Concretes
         }
 
         /// <summary>
-        /// Seçilen odaların toplam fiyatını hesaplar.
+        /// Seçilen odaların belirtilen süre boyunca ek yatak talebiyle birlikte toplam fiyatını hesaplar.
         /// </summary>
-        /// <param name="selectedRooms">Seçilen odaların listesi</param>
-        /// <returns>Hesaplanan toplam fiyat</returns>
-        public decimal CalculateTotalPrice(List<Room> selectedRooms)
+        /// <param name="selectedRooms">Seçilen odaların listesi.</param>
+        /// <param name="totalDays">Toplam kalınacak gün sayısı.</param>
+        /// <param name="extraBedCount">Ek yatak sayısı.</param>
+        /// <returns>Toplam fiyat.</returns>
+        public decimal CalculateTotalPrice(List<Room> selectedRooms, int totalDays, int extraBedCount)
         {
-            return selectedRooms.Sum(r => r.Price);
+            decimal totalPrice = selectedRooms.Sum(r => r.Price) * totalDays;
+            if (extraBedCount > 0)
+            {
+                decimal extraBedPrice = selectedRooms.Select(r => r.Price / 3).Sum();
+                totalPrice += Math.Round(extraBedPrice, 2);
+            }
+            return totalPrice;
         }
 
         //----------//
@@ -203,6 +211,18 @@ namespace SolanisHotel.BLL.Managers.Concretes
         public ReservationDTO MappingToReservationDTO(Reservation reservation) => _mapper.Map<ReservationDTO>(reservation);
 
         //-----Privates Methods-----//
+
+        /// <summary>
+        /// Belirli bir giriş ve çıkış tarihleri arasındaki toplam gün sayısını hesaplar.
+        /// </summary>
+        /// <param name="checkIn">Giriş tarihi.</param>
+        /// <param name="checkOut">Çıkış tarihi.</param>
+        /// <returns>Gün sayısı.</returns>
+        private int CalculateTotalNumberOfDays(DateTime checkIn, DateTime checkOut)
+        {
+            TimeSpan duration = checkOut.Subtract(checkIn);
+            return duration.Days + 1;
+        }
 
         /// <summary>
         /// Misafir sayısı ile oda sayısını karşılaştırarak geçerliliği doğrular.
@@ -240,8 +260,6 @@ namespace SolanisHotel.BLL.Managers.Concretes
 
 
         //-----Test Area-----//
-
-
 
         //-----Test Area-----//
     }
