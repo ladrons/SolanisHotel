@@ -12,6 +12,25 @@
                 <div class="card-body">
 
                     <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="CustomerDTO.FirstName" for="firstname" class="form-label">İsim</label>
+                            <input asp-for="CustomerDTO.FirstName" type="text" id="firstname" class="form-control" required />
+                            <span asp-validation-for="CustomerDTO.FirstName" style="color:red"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="CustomerDTO.LastName" for="lastname" class="form-label">Soyisim</label>
+                            <input asp-for="CustomerDTO.LastName" type="text" id="lastname" class="form-control" required />
+                            <span asp-validation-for="CustomerDTO.LastName" style="color:red"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="CustomerDTO.BirthDate" for="birthDate" class="form-label">Doğum Tarihi</label>
+                            <input asp-for="CustomerDTO.BirthDate" type="date" id="birthDate" class="form-control" required />
+                            <span asp-validation-for="CustomerDTO.BirthDate" style="color:red"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
                         <div class="col-md-7 mb-3">
                             <label asp-for="CustomerDTO.Email" for="email" class="form-label">E-Posta</label>
                             <input asp-for="CustomerDTO.Email" type="email" id="email" class="form-control" required />
@@ -35,34 +54,16 @@
                         <input type="password" class="form-control" id="confirm-password" name="confirm-password" readonly>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label asp-for="CustomerDTO.FirstName" for="firstname" class="form-label">İsim</label>
-                            <input asp-for="CustomerDTO.FirstName" type="text" id="firstname" class="form-control" required />
-                            <span asp-validation-for="CustomerDTO.FirstName" style="color:red"></span>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label asp-for="CustomerDTO.LastName" for="lastname" class="form-label">Soyisim</label>
-                            <input asp-for="CustomerDTO.LastName" type="text" id="lastname" class="form-control" required />
-                            <span asp-validation-for="CustomerDTO.LastName" style="color:red"></span>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label asp-for="CustomerDTO.BirthDate" for="birthDate" class="form-label">Doğum Tarihi</label>
-                            <input asp-for="CustomerDTO.BirthDate" type="date" id="birthDate" class="form-control" required />
-                            <span asp-validation-for="CustomerDTO.BirthDate" style="color:red"></span>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-around">
+                    <div class="row justify-content-around">                       
                         <button type="submit" class="col-md-5 btn btn-success btn-xl">Kayıt Ol</button>
-
-                        <a asp-controller="Account" asp-action="Login" class="col-md-5 btn btn-primary btn-xl">Giriş Yap</a>
                     </div>
                 </div>
             </form>
         </div>
 
         <div class="mt-3 text-center">
+            @* <a asp-controller="Account" asp-action="Login" class="col-md-5 btn btn-primary btn-xl">Giriş Yap</a> *@
+
             <a href="#" class="alt-text">Kampanyalar</a>
 
             <a href="#" class="alt-text">Hakkımızda</a>
