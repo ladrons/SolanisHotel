@@ -6,6 +6,9 @@
 
 <div class="d-flex align-items-center justify-content-center">
     <div class="col-md-8">
+
+        <p class="text-center" style="color:red">@TempData["RegistrationFailed"]</p>
+
         <div class="card">
             <h4 class="card-header text-center">Solanis Hotel Kayıt Formu</h4>
             <form asp-action="Register" method="post">
@@ -29,7 +32,6 @@
                         </div>
                     </div>
 
-
                     <div class="row">
                         <div class="col-md-7 mb-3">
                             <label asp-for="CustomerDTO.Email" for="email" class="form-label">E-Posta</label>
@@ -49,12 +51,7 @@
                         <span asp-validation-for="CustomerDTO.Password" style="color:red"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="confirm-password" class="form-label">Şifre Tekrar</label>
-                        <input type="password" class="form-control" id="confirm-password" name="confirm-password" readonly>
-                    </div>
-
-                    <div class="row justify-content-around">                       
+                    <div class="row justify-content-around">
                         <button type="submit" class="col-md-5 btn btn-success btn-xl">Kayıt Ol</button>
                     </div>
                 </div>
@@ -62,7 +59,7 @@
         </div>
 
         <div class="mt-3 text-center">
-            @* <a asp-controller="Account" asp-action="Login" class="col-md-5 btn btn-primary btn-xl">Giriş Yap</a> *@
+            <a asp-controller="Account" asp-action="Login">Giriş Yap</a>
 
             <a href="#" class="alt-text">Kampanyalar</a>
 
@@ -84,3 +81,11 @@
         font-size: 18px;
     }
 </style>
+
+<script src="~/js/Common/phoneFormat.js"></script>
+
+
+@*<div class="mb-3">
+   <label for="confirm-password" class="form-label">Şifre Tekrar</label>
+   <input type="password" class="form-control" id="confirm-password" name="confirm-password" readonly>
+  </div> *@
