@@ -51,6 +51,4 @@ Bu proje MIT Lisence ile lisanslanmıştır.
 
 ## İletişim
 
-Eğer bir sorunuz varsa, burak_cevik76@hotmail.com.tr adresinden bana ulaşabilirsiniz.
-
-
+Soru ve önerileriniz için bana 'burak_cevik76@hotmail.com.tr' veya 'https://www.linkedin.com/in/burakcevik76/' adreslerinden ulaşabilirsiniz.
