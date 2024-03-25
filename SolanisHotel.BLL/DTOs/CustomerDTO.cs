@@ -14,6 +14,7 @@ namespace SolanisHotel.BLL.DTOs
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Telefon boş bırakılamaz!")]
+        [StringLength(16, MinimumLength = 16, ErrorMessage = "Telefon numarası geçerli değil.")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "İsim boş bırakılamaz!")]

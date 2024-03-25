@@ -70,6 +70,8 @@ namespace SolanisHotel.BLL.Managers.Concretes
 
         public async Task<bool> RegisterOrUpdateCustomer(CustomerDTO customerDTO)
         {
+            customerDTO.PhoneNumber = PhoneNumberFix(customerDTO.PhoneNumber);
+
             if (await EmailAlreadyExists(customerDTO.Email))
             {
                 //E-Posta veri tabanında varsa;
