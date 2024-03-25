@@ -28,13 +28,20 @@ namespace SolanisHotel.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                avm.CustomerDTO.Password = EncryptionService.SHA256Encrypt(avm.CustomerDTO.Password);
-                avm.CustomerDTO.PhoneNumber = avm.CustomerDTO.PhoneNumber.Replace(" ", "");
+                avm.CustomerDTO.Password = EncryptionService.SHA256Encrypt(avm.CustomerDTO.Password);                
 
-                return await _customerMan.RegisterOrUpdateCustomer(avm.CustomerDTO)
-                    ? RedirectToAction("Index", "Home") : View(avm);
+                if (await _customerMan.RegisterOrUpdateCustomer(avm.CustomerDTO))
+                {
+                    TempData["RegistrationSuccessful"] = "Başarılı bir şekilde kayıt olundu!";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["RegistrationFailed"] = "Girdiğiniz e-posta adresi zaten kullanımda. Lütfen başka bir e-posta adresi deneyin veya hesabınıza giriş yapın."; 
+                    return View();
+                }
             }
-            return View(avm);
+            return View();
         }
 
         //-----//-----//

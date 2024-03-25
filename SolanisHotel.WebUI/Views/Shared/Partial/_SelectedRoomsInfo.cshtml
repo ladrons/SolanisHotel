@@ -1,36 +1,82 @@
-﻿@model List<RoomDTO>
+﻿@model ReservationVM
 
-<div class="card">
+<div class="card text-center">
     <div class="card-header">
-        <h3 class="text-center">Seçilen Oda Bilgileri</h3>
+        <h3>Rezervasyon Bilgileriniz</h3>
     </div>
 
     <div class="card-body">
-        @foreach (var room in Model)
+        <h4 class="card-title">Genel Bilgiler</h4>
+
+        <div class="mb-2">
+            <span><strong>Giriş Tarihi:</strong> @Model.CheckIn.ToLongDateString() <strong>Çıkış Tarihi:</strong> @Model.CheckOut.ToLongDateString()</span>
+        </div>
+        <div class="mb-2">
+            <span><strong>Toplam Misafir Sayısı:</strong> @Model.ReservationDTO.NumberOfGuests</span>
+        </div>
+        <div class="mb-2">
+            <span><strong>Toplam Oda Sayısı:</strong> @Model.ReservationDTO.NumberOfRooms</span>
+        </div>
+        <div>
+            @if (Model.ReservationDTO.NumberOfExtraBeds > 0)
+            {
+                <span>@Model.ReservationDTO.NumberOfExtraBeds Adet Ekstra Yatak</span>
+
+            }
+            else
+            {
+                <span>Ekstra Yatak Gerekmiyor</span>
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row justify-content-center">
+        <h4 class="card-title">Oda Bilgileri</h4>
+        @foreach (RoomDTO room in Model.SuitableRoomsDTO)
         {
-            <div class="col-md-12" style="text-align:center">
-                <div>
-                    <h4>Normal Oda - @room.RoomNumber</h4>
+            <div class="col-4">
 
-                    <hr />
+                <div class="card-body">
 
-                    <div class="mb-3">
-                        <strong>Oda Numarası:</strong> @room.RoomNumber
+                    <div class="mb-2">
+                        <span><strong>Oda Numarası:</strong> @room.RoomNumber</span>
+                    </div>
+                    <div class="mb-2">
+                        <span><strong>Günlük Fiyat:</strong> @room.Price.ToString("C")</span>
+                    </div>
+                    <div>
+                        <span><strong>Kapasite:</strong> @room.Capacity</span>
                     </div>
 
-                    <div class="mb-3">
-                        <strong>Oda Açıklaması:</strong> @room.Description
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Oda Fiyatı:</strong> @room.Price.ToString("C")
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Kapasite:</strong> @room.Capacity
-                    </div>
                 </div>
+
             </div>
         }
+    </div>
+
+    <hr />
+
+    <div class="card-body">
+        <h4 class="card-title">Ödeme Bilgileri</h4>
+
+        <div class="mb-2">
+            <span><strong>Gecelik Fiyat (Oda Başına):</strong> @Model.SuitableRoomsDTO.FirstOrDefault()?.Price.ToString("C")</span>
+        </div>
+
+        @if (Model.ReservationDTO.NumberOfExtraBeds > 0)
+        {
+            decimal extraBedPrice = Model.SuitableRoomsDTO.FirstOrDefault().Price / 3;
+
+            <div class="mb-2">
+                <span><strong>Ekstra Yatak Fiyatı (Yatak Başına):</strong> @extraBedPrice.ToString("C")</span>
+            </div>
+        }
+
+        <div>
+            <span><strong>Toplam Fiyat:</strong> @Model.ReservationDTO.TotalPrice.ToString("C")</span>
+        </div>
+
     </div>
 </div>
