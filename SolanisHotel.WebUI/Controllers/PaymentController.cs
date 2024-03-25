@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SolanisHotel.BLL.Managers.Abstracts;
-using SolanisHotel.BLL.Results;
 using SolanisHotel.BLL.ViewModels;
 using SolanisHotel.COMMON.Tools;
 using SolanisHotel.WebUI.Extensions;
@@ -9,14 +8,17 @@ namespace SolanisHotel.WebUI.Controllers
 {
     public class PaymentController : Controller
     {
+        readonly PaymentProcessor _processor;
+
         readonly ICustomerManager _customerManager;
 
         IPaymentManager _paymentMan;
 
-        public PaymentController(IPaymentManager paymentMan, ICustomerManager customerManager)
+        public PaymentController(IPaymentManager paymentMan, ICustomerManager customerManager, PaymentProcessor processor)
         {
             _paymentMan = paymentMan;
             _customerManager = customerManager;
+            _processor = processor;
         }
 
         //----------//----------//
@@ -29,8 +31,14 @@ namespace SolanisHotel.WebUI.Controllers
             {
                 PaymentVM pvm = new PaymentVM
                 {
+                    ReservationVM = tempReservation,
+
                     CustomerDTO = tempReservation.CustomerDTO, //Kayıtlı müşteri ise bilgileri / Değilse misafir nesnesi.
-                    suitableRoomsDTO = tempReservation.SuitableRoomsDTO, //Seçilmiş odaların bilgileri.
+                    
+                    PaymentInformation = new PaymentInformation
+                    {
+                        Amount = tempReservation.ReservationDTO.TotalPrice,
+                    }
                 };
 
                 return View(pvm);
@@ -48,19 +56,16 @@ namespace SolanisHotel.WebUI.Controllers
             //Güncel müşteri nesnesini yeni veriler ile değiştir ve DB'de güncelle.
             tempReservation!.CustomerDTO = await _customerManager.UpdateCustomerIfGuest(pvm.CustomerDTO, tempReservation.ReservationDTO.CustomerId);
 
-            #region TempPaymentTool
-            PaymentProcessor processor = new PaymentProcessor(); //Ödeme nesnesini çağır.
-            PaymentResult pR = processor.ProcessPayment(pvm.PaymentDTO.CardInfo, tempReservation.ReservationDTO.TotalPrice); //Ödemeyi gerçekleştir ve sonucu dön.
-            #endregion
+            //API tarafına ulaş ve sonucu al.
+            PaymentResult pR = await _processor.SendPaymentRequest(pvm.PaymentInformation);
 
             //Payment nesnesi yaratır, ödeme sonucuna göre mevcut rezervasyon bilgisi ile odaları günceller.
             tempReservation.PaymentDTO = await _paymentMan.CreatePayment(pR, tempReservation.ReservationDTO.Id);
 
             HttpContext.Session.SetObject("tempReservation", tempReservation);
 
-            return pR.IsSuccessful ? RedirectToAction("PaymentSuccessful") : RedirectToAction("PaymentFailed");
+            return pR.Result ? RedirectToAction("PaymentSuccessful") : RedirectToAction("PaymentFailed");
         }
-
 
         //-----//-----//
 
@@ -83,34 +88,3 @@ namespace SolanisHotel.WebUI.Controllers
         //-----//-----//
     }
 }
-
-
-//ReservationVM test = new ReservationVM
-//{
-//    CheckIn = DateTime.Now,
-//    CheckOut = DateTime.Now.AddDays(1),
-
-//    ResDTO = new ReservationDTO
-//    {
-//        NumberOfExtraBeds = 1,
-//    },
-
-//    PaymentDTO = new PaymentDTO
-//    {
-//        TotalAmount = 20,
-//        TransactionCode = 123456
-//    },
-
-//    SuitableRoomsDTO = new List<RoomDTO>
-//    {
-//        new RoomDTO
-//        {
-//            RoomNumber = 101
-//        },
-
-//        new RoomDTO
-//        {
-//            RoomNumber = 102
-//        }
-//    }
-//};

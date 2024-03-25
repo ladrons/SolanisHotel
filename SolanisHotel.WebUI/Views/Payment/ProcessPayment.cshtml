@@ -14,7 +14,7 @@
         <!-- Sol Sütun: Odalar Bilgisi -->
         <div class="col-md-6 mb-3">
 
-            <partial name="Partial/_SelectedRoomsInfo" for="suitableRoomsDTO" />
+            <partial name="Partial/_SelectedRoomsInfo" for="ReservationVM" />
 
         </div>
 
@@ -87,33 +87,35 @@
                         }
                         <!-- Kredi kartı bilgileri -->
                         <div class="mb-3">
-                            <label asp-for="PaymentDTO.CardInfo.CardUsername" for="cardUsername" class="form-label">Kart Sahibinin Adı</label>
-                            <input asp-for="PaymentDTO.CardInfo.CardUsername" id="cardUsername" class="form-control" required />
+                            <label asp-for="PaymentInformation.CardNumber" for="cardUsername" class="form-label">Kart Sahibinin Adı</label>
+                            <input asp-for="PaymentInformation.CardUsername" id="cardUsername" class="form-control" required />
                             @* <span asp-validation-for="PaymentDTO.CardUsername" style="color:red"></span> *@
                         </div>
                         <div class="mb-3">
-                            <label asp-for="PaymentDTO.CardInfo.CardNumber" for="cardNumber" class="form-label">Kart Numarası</label>
-                            <input asp-for="PaymentDTO.CardInfo.CardNumber" id="cardNumber" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" required />
+                            <label asp-for="PaymentInformation.CardNumber" for="cardNumber" class="form-label">Kart Numarası</label>
+                            <input asp-for="PaymentInformation.CardNumber" id="cardNumber" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" required />
                             @* <span asp-validation-for="PaymentDTO.CardNumber" style="color:red"></span> *@
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="PaymentDTO.CardInfo.ExpirationMonth" for="expiryMonth" class="form-label">Son Kullanma Tarihi (Ay)</label>
-                                <input asp-for="PaymentDTO.CardInfo.ExpirationMonth" id="expiryMonth" class="form-control" required />
+                                <label asp-for="PaymentInformation.ExpirationMonth" for="expiryMonth" class="form-label">Son Kullanma Tarihi (Ay)</label>
+                                <input asp-for="PaymentInformation.ExpirationMonth" id="expiryMonth" class="form-control" required />
                                 @* <span asp-validation-for="PaymentDTO.ExpirationMonth" style="color:red"></span> *@
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label asp-for="PaymentDTO.CardInfo.ExpirationYear" for="expiryYear" class="form-label">Son Kullanma Tarihi (Yıl)</label>
-                                <input asp-for="PaymentDTO.CardInfo.ExpirationYear" id="expiryYear" class="form-control" required />
+                                <label asp-for="PaymentInformation.ExpirationYear" for="expiryYear" class="form-label">Son Kullanma Tarihi (Yıl)</label>
+                                <input asp-for="PaymentInformation.ExpirationYear" id="expiryYear" class="form-control" required />
                                 @* <span asp-validation-for="PaymentDTO.ExpirationYear" style="color:red"></span> *@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="PaymentDTO.CardInfo.CVV" for="securityNumber" class="form-label">Güvenlik Kodu (CVV)</label>
-                            <input asp-for="PaymentDTO.CardInfo.CVV" id="securityNumber" class="form-control" required />
+                            <label asp-for="PaymentInformation.SecurityNumber" for="securityNumber" class="form-label">Güvenlik Kodu (CVV)</label>
+                            <input asp-for="PaymentInformation.SecurityNumber" id="securityNumber" class="form-control" required />
                             @* <span asp-validation-for="PaymentDTO.CVV" style="color:red"></span> *@
                         </div>
+
+                        <input type="hidden" asp-for="PaymentInformation.Amount"/>
 
                         <button type="submit" class="btn btn-primary btn-block" id="continueButton">Ödeme Yap</button>
                     </form>
@@ -124,3 +126,4 @@
 </div>
 
 <script src="~/js/Common/reservationExitHandler.js"></script>
+<script src="~/js/Common/phoneFormat.js"></script>

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SolanisHotel.BLL.DTOs;
 using SolanisHotel.BLL.Managers.Abstracts;
-using SolanisHotel.BLL.Results;
+using SolanisHotel.COMMON.Tools;
 using SolanisHotel.DAL.Repositories.Abstracts;
 using SolanisHotel.ENTITIES.Enums;
 using SolanisHotel.ENTITIES.Models;
@@ -31,8 +31,8 @@ namespace SolanisHotel.BLL.Managers.Concretes
         {
             Reservation currentReservation = await _reservationMan.FindAsync(reservationId);
 
-            Payment newPayment = await GeneratePayment(paymentResult.IsSuccessful, currentReservation, paymentResult.TransactionCode, paymentResult.PaymentDate);
-            currentReservation = await _reservationMan.UpdateReservationStatusAndPerformActions(currentReservation, paymentResult.IsSuccessful);
+            Payment newPayment = await GeneratePayment(paymentResult.Result, currentReservation, paymentResult.TransactionCode, paymentResult.PaymentDate);
+            currentReservation = await _reservationMan.UpdateReservationStatusAndPerformActions(currentReservation, paymentResult.Result);
 
             if (currentReservation.ReservationStatus == ReservationStatus.Cancelled)
             {

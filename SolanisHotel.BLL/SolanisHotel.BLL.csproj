@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SolanisHotel.COMMON\SolanisHotel.COMMON.csproj" />
 		<ProjectReference Include="..\SolanisHotel.DAL\SolanisHotel.DAL.csproj">
 			<PrivateAssets>All</PrivateAssets>
 		</ProjectReference>

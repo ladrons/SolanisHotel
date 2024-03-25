@@ -1,114 +1,77 @@
-﻿#nullable disable
+﻿using System.Text;
+using System.Text.Json;
 
-using SolanisHotel.BLL.DTOs;
-using SolanisHotel.BLL.Results;
+#nullable disable
 
 namespace SolanisHotel.COMMON.Tools
 {
-    public class PaymentProcessor //API TARAFINI TEMSİL EDER. (ileride API aktif olduğunda bu sınıf kaldırılacak.)
+    public class PaymentProcessor
     {
-        private Dictionary<string, CardInfo> _registeredCards;
+        readonly HttpClient _client;
 
-        public PaymentProcessor()
+        public PaymentProcessor(HttpClient client)
         {
-            _registeredCards = new Dictionary<string, CardInfo>();
-
-            AddRegisteredCard("1234567812345670", "John Doe", "12", "25", "123", 5000.00m);
+            _client = client;
         }
 
-        public PaymentResult ProcessPayment(CardInfoDTO info, decimal amount)
+        //----------//----------//
+
+        public async Task<PaymentResult> SendPaymentRequest(PaymentInformation paymentInfo)
         {
-            PaymentStatus paymentResult = CheckRegisteredCard(info, amount);
-            if (paymentResult == PaymentStatus.Success)
+            string jsonPayment = JsonSerializer.Serialize(paymentInfo);
+            StringContent content = new StringContent(jsonPayment, Encoding.UTF8, "application/json");
+
+            try
+            {
+                using HttpResponseMessage response = await _client.PostAsync("https://localhost:7069/api/Payment/ReceivePayment", content);
+
+                string responseData = await response.Content.ReadAsStringAsync();
+                PaymentResult paymentResult = JsonSerializer.Deserialize<PaymentResult>(responseData, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+
+                return paymentResult;
+            }
+            catch (Exception)
             {
                 return new PaymentResult
                 {
-                    IsSuccessful = true,
-                    TransactionCode = GenerateTransactionCode(),
+                    Result = false,
+                    TransactionCode = 0, //İlgili değer 0 ise banka tarafına veri hiç gitmemiş demektir.
                     PaymentDate = DateTime.Now,
                 };
             }
-            else
-            {
-                return new PaymentResult
-                {
-                    IsSuccessful = false,
-                    TransactionCode = GenerateTransactionCode(),
-                    PaymentDate = DateTime.Now,
-                };
-            }
-        } //API
+        }
+    }
 
-        private PaymentStatus CheckRegisteredCard(CardInfoDTO info, decimal amount)
+
+    public class PaymentInformation
+    {
+        public string CardUsername { get; set; }
+        public string CardNumber { get; set; }
+        public string ExpirationMonth { get; set; }
+        public string ExpirationYear { get; set; }
+        public string SecurityNumber { get; set; }
+
+        public decimal Amount { get; set; }
+    }
+
+    public class PaymentResult
+    {
+        public PaymentResult()
         {
-            if (_registeredCards.ContainsKey(info.CardNumber))
-            {
-                CardInfo registeredCard = _registeredCards[info.CardNumber];
 
-                if (registeredCard.CardUsername == info.CardUsername
-                    && registeredCard.ExpirationMonth == info.ExpirationMonth
-                    && registeredCard.ExpirationYear == info.ExpirationYear
-                    && registeredCard.SecurityNumber == info.CVV)
-                {
-                    if (registeredCard.Balance >= amount)
-                    {
-                        return PaymentStatus.Success;
-                    }
-                    else
-                    {
-                        //Kart bakiyesi yetersiz.
-                        return PaymentStatus.InsufficientBalance;
-                    }
-                }
-                else
-                {
-                    //Kart bilgileri yanlış.
-                    return PaymentStatus.InvalidCard;
-                }
-            }
-            else
-            {
-                //Kayıtlı kart bulunamadı.
-                return PaymentStatus.CardNotFound;
-            }
-        } //API
+        }
 
-        private int GenerateTransactionCode()
+        public PaymentResult(bool result)
         {
-            Random random = new Random();
-            return random.Next(100000, 999999);
-        } //API
-        private void AddRegisteredCard(string cardNumber, string cardUsername, string expirationMonth, string expirationYear, string cvv, decimal balance)
-        {
-            _registeredCards.Add(cardNumber, new CardInfo(cardUsername, expirationMonth, expirationYear, cvv, balance)); //API
-        } //API
+            Result = result;
+        }
 
-        //-----/-----//
-
-        private class CardInfo
-        {
-            public CardInfo(string cardUsername, string expirationMonth, string expirationYear, string ccv, decimal balance)
-            {
-                CardUsername = cardUsername;
-                ExpirationMonth = expirationMonth;
-                ExpirationYear = expirationYear;
-                SecurityNumber = ccv;
-                Balance = balance;
-            }
-
-            public string CardUsername { get; set; }
-
-            public string CardNumber { get; set; }
-            public string ExpirationMonth { get; set; }
-            public string ExpirationYear { get; set; }
-            public string SecurityNumber { get; set; }
-
-            public decimal Balance { get; set; }
-        } //DB'de bulunan kart bilgilerini temsil eder. //API
-        private enum PaymentStatus
-        {
-            Success = 1, InvalidCard = 7, InsufficientBalance = 8, CardNotFound = 0
-        } //API
+        public bool Result { get; set; }
+        public int TransactionCode { get; set; }
+        public DateTime PaymentDate { get; set; }
     }
 }
 

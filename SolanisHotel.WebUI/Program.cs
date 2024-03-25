@@ -1,15 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SolanisHotel.BLL.DependencyResolvers;
+using SolanisHotel.COMMON.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.ConfigureLogging(logging =>
-{
-    logging.ClearProviders();
-    logging.AddConsole();
-});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient<PaymentProcessor>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(cookie =>

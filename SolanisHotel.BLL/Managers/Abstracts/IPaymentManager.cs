@@ -1,5 +1,5 @@
 ﻿using SolanisHotel.BLL.DTOs;
-using SolanisHotel.BLL.Results;
+using SolanisHotel.COMMON.Tools;
 using SolanisHotel.ENTITIES.Models;
 
 namespace SolanisHotel.BLL.Managers.Abstracts

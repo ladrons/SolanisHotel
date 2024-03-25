@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SolanisHotel.BLL\SolanisHotel.BLL.csproj" />
     <ProjectReference Include="..\SolanisHotel.ENTITIES\SolanisHotel.ENTITIES.csproj" />
   </ItemGroup>
 
