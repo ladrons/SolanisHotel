@@ -4,10 +4,65 @@
 
 <div class="text-center">
     <h1 class="display-4">Solanis Hotel'e Hoş Geldiniz.</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>  
 
     <h3 style="color:green">@TempData["RegistrationSuccessful"]</h3>
 
     <h5 style="color:green">@TempData["loginSuccessful"]</h5>
     <h5 style="color:green">@TempData["logoutSuccessful"]</h5>
 </div>
+
+<div>
+    <section class="intro">
+        <div class="container">
+            <p>SolanisHotel'de sıcak bir karşılama ve unutulmaz bir konaklama deneyimi sizi bekliyor. Eşsiz mimarisi, lüks olanakları ve misafirperver personelimizle, hayallerinizdeki tatil veya iş seyahati için mükemmel bir mekân sunuyoruz.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Konforun ve Huzurun Buluşma Noktası</h2>
+            <p>SolanisHotel, konforun ve huzurun buluşma noktasıdır. Modern tasarımıyla dikkat çeken odalarımız, her detayı özenle düşünülerek hazırlanmıştır. Konuklarımızın rahatı ve memnuniyeti için her şey düşünülmüş, en ince ayrıntısına kadar özenle tasarlanmıştır.</p>
+        </div>
+    </section>
+
+    <section class="location">
+        <div class="container">
+            <h2>Lokasyon ve Çevre</h2>
+            <p>SolanisHotel, şehrin kalbinde yer alırken, doğanın huzurlu atmosferini de sunuyor. Merkezi konumuyla iş seyahatlerinizde pratik bir tercih olmanın yanı sıra, çevredeki tarihi ve turistik yerlere kolay erişim sağlıyor. İster iş ister tatil amaçlı ziyaret ediyor olun, SolanisHotel sizi ayrıcalıklı bir deneyimle karşılamak için hazır.</p>
+        </div>
+    </section>
+
+    <section class="hospitality">
+        <div class="container">
+            <h2>Misafirperverlik ve İlgi</h2>
+            <p>Biz, SolanisHotel ailesi olarak, misafirlerimizin memnuniyetini en üst seviyede tutmayı amaçlıyoruz. Konuklarımızın her ihtiyacını karşılamak ve unutulmaz anlar yaşamalarını sağlamak için buradayız. Güleryüzlü personelimiz, sıcak karşılamamız ve yüksek kaliteli hizmet anlayışımızla konuklarımızın her zaman yanındayız.</p>
+        </div>
+    </section>
+
+    <section class="special-offers">
+        <div class="container">
+            <h2>Özel Fırsatlar ve Kampanyalar</h2>
+            <p>SolanisHotel'de her zaman size özel fırsatlar ve kampanyalar sunuyoruz. Erken rezervasyon indirimleri, paket tatil seçenekleri ve daha fazlası için bizi takip edin veya bize ulaşın.</p>
+        </div>
+    </section>
+</div>
+
+<style>
+    .container {
+        /* max-width: 800px; */
+        margin: 0 auto;
+    }
+
+    .intro, .features, .location, .hospitality {
+        margin-bottom: 40px;
+    }
+
+        .intro p, .features p, .location p, .hospitality p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+    h1, h2{
+        color: #333;
+    }
+</style>
