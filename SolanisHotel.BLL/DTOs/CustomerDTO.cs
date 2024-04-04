@@ -14,7 +14,7 @@ namespace SolanisHotel.BLL.DTOs
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Telefon boş bırakılamaz!")]
-        [StringLength(16, MinimumLength = 16, ErrorMessage = "Telefon numarası geçerli değil.")]
+        //[StringLength(16, MinimumLength = 16, ErrorMessage = "Telefon numarası geçerli değil.")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "İsim boş bırakılamaz!")]
@@ -27,3 +27,5 @@ namespace SolanisHotel.BLL.DTOs
         public DateTime BirthDate { get; set; }
     }
 }
+
+//Todo: Kayıtlı kullanıcı ile satın alırken 'PhoneNumber' doğrulama kısmı sorun çıkartıyor. Boşluklar dahil 16 hane olması gerekli ancak kayıtlı kullanıcıda boşluklar olmadığı için validate edemiyor. Şimdilik Lenght kontrolü kapatıldı. Kontrol edilecek (MidPriority)
